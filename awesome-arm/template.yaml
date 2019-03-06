@@ -1,0 +1,21 @@
+﻿parameters:
+ storageAccountType:
+  type: string
+  defaultValue: Standard_LRS
+
+variables: 
+ storageAccountName: "[concat('store', uniquestring(resourceGroup().id))]"
+
+resources:
+ - name: FanieAwesomeStorage
+   type: "Microsoft.Storage/storageAccounts"
+   apiVersion: 2018-07-01
+   location: westeurope
+   sku:
+    name: "[parameters('storageAccountType')]"
+   kind: StorageV2
+
+outputs:
+ storageAccountName:
+  type: string
+  value: "[variables('storageAccountName')]"
