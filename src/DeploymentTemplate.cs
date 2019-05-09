@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -18,11 +20,20 @@ namespace dotnet_az
         public Dictionary<string, object> Variables { get; set; }
         public object[] Functions { get; set; }
         public Resource[] Resources { get; set; }
-        public Dictionary<string,Output> Outputs { get; set; }
+        public Dictionary<string, Output> Outputs { get; set; }
 
-        
+
         public void ResolveReferences(Resource[] resources)
         {
+            var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(new CamelCaseNamingConvention())
+                .IgnoreUnmatchedProperties()
+                .Build();
+
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(new CamelCaseNamingConvention())
+                .Build();
+
             if (resources == null)
             {
                 return;
@@ -33,30 +44,58 @@ namespace dotnet_az
             for (int i = 0; i < resources.Length; i++)
             {
                 var resource = resources[i];
+                newResources.RemoveAt(i);
                 if (resource.IsReference())
                 {
-                    newResources.RemoveAt(i);
                     
-                    var linkedResources = ResourcesSerializer.Serialize(resource.Name);
-                        
-                        foreach (var linkedResource in linkedResources)
-                        {
-                            ResolveReferences(linkedResource.Resources);
-                            linkedResource.SetDefaults();
-                        }
-                        newResources.InsertRange(i, linkedResources);
 
-                   
+                    var linkedResource = ResourcesSerializer.Serialize(resource.Name);
+
+                    ResolveReferences(linkedResource.Resources);
+
+                    newResources.Insert(i, linkedResource);
                 }
-                
+                else
+                {
+                    var resourceTypeFile = $"{resource.Type.Replace("/", "_")}.yaml";
+                    var stringBuilder = new StringBuilder();
+                    var systemDefaults = File.ReadAllText(@".armr\Resource.yaml");
+                    var systemTypeDefaults = File.ReadAllText($@".armr\{resourceTypeFile}");
+                    var workspaceDefaults = string.Empty;
+                    var resourceTypeDefaults = string.Empty;
+                    var workspaceDefaultsFile = $@".armr\Resource.yaml";
+                    if (File.Exists(workspaceDefaultsFile))
+                    {
+                        workspaceDefaults = File.ReadAllText(workspaceDefaultsFile);
+                    }
+
+                    
+                    var workspaceResourceTypeDefaultsFile = $@".armr\{resourceTypeFile}";
+                    if (File.Exists(workspaceResourceTypeDefaultsFile))
+                    {
+                        resourceTypeDefaults = File.ReadAllText(workspaceResourceTypeDefaultsFile);
+                    }
+
+                    var resourceYaml = serializer.Serialize(resource);
+
+
+                    stringBuilder.AppendLine(systemDefaults);
+                    stringBuilder.AppendLine(systemTypeDefaults);
+                    stringBuilder.AppendLine(workspaceDefaults);
+                    stringBuilder.AppendLine(resourceTypeDefaults);
+                    stringBuilder.AppendLine(resourceYaml);
+                    var newResource = deserializer.Deserialize<Resource>(stringBuilder.ToString());
+                    newResources.Insert(i, newResource);
+                }
+
             }
 
             Resources = newResources.ToArray();
 
-            
+
         }
 
-        
+
     }
 
 }

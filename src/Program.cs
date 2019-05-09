@@ -22,8 +22,8 @@ namespace dotnet_az
 
         private void OnExecute()
         {
-            var yaml = File.ReadAllText(TemplateFile);
-            var json = ArmConverter.Convert(yaml);
+            
+            var json = ArmConverter.Convert(TemplateFile);
 
             File.WriteAllText("template.json", json);
 

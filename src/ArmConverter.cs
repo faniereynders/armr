@@ -8,18 +8,32 @@ using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 public class ArmConverter {
-    public static string Convert (string document) {
+    public static string Convert (string fileName) {
+        var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(new CamelCaseNamingConvention())
+                .IgnoreUnmatchedProperties()
+                .Build();
 
-        var defaults = File.ReadAllText(".armr\\Template.yaml");
+        var systemDefaults = File.ReadAllText(@".armr\Template.yaml");
+
+        var fileInfo = new FileInfo(fileName);
+        var workspaceDefaults = string.Empty;
+        var workspaceDefaultsFile = $@"{fileInfo.Directory.FullName}\.armr\Template.yaml";
+        if (File.Exists(workspaceDefaultsFile))
+        {
+            workspaceDefaults = File.ReadAllText(workspaceDefaultsFile);
+        }
+
+        var templateYaml = File.ReadAllText(fileName);
+        
 
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine(defaults);
-        stringBuilder.AppendLine(document);
+        stringBuilder.AppendLine(systemDefaults);
+        stringBuilder.AppendLine(workspaceDefaults);
+        stringBuilder.AppendLine(templateYaml);
 
         using (var input = new StringReader (stringBuilder.ToString())) {
-            var deserializer = new DeserializerBuilder ()
-                .WithNamingConvention (new CamelCaseNamingConvention ())
-                .Build ();
+            
 
             var deploymentTemplate = deserializer.Deserialize<DeploymentTemplate> (input);
 

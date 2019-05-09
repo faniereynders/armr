@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include=".armr\Microsoft.Storage_storageAccounts.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include=".armr\Template.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

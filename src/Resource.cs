@@ -9,17 +9,8 @@ namespace dotnet_az
 
     public class Resource
     {
-        private static Dictionary<string, string> resourceTypeApiVersions = new Dictionary<string, string>
-        {
-            { "Microsoft.Storage/storageAccounts", "2018-07-01" },
-            { "Microsoft.Resources/deployments", "2017-05-10" },
-        };
-
-
         public string Condition { get; set; }
-
-
-
+               
         public string Type
         {
             get; set;
@@ -40,16 +31,11 @@ namespace dotnet_az
         public Plan Plan { get; set; }
         public Resource[] Resources { get; set; }
 
-        public void SetDefaults()
-        {
-            if (string.IsNullOrEmpty(ApiVersion))
-            {
-                ApiVersion = resourceTypeApiVersions[Type];
-            }
-        }
+        [YamlIgnore]
+        public string RawValue { get; set; }
 
-        
-       public bool IsReference(){
+
+        public bool IsReference(){
             return (Name.EndsWith(".yaml") || Name.EndsWith(".yml") || Name.EndsWith(".json") || 
               Name.StartsWith("http://") || Name.StartsWith("https://"));
         }
