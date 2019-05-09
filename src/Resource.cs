@@ -46,13 +46,14 @@ namespace dotnet_az
             {
                 ApiVersion = resourceTypeApiVersions[Type];
             }
-            Include = null;
         }
 
-        [JsonIgnore]
-        public string Include { get; set; }
-        [JsonIgnore]
-        public Dictionary<string, object> Parameters { get; set; }
+        
+       public bool IsReference(){
+            return (Name.EndsWith(".yaml") || Name.EndsWith(".yml") || Name.EndsWith(".json") || 
+              Name.StartsWith("http://") || Name.StartsWith("https://"));
+        }
+
     }
 
 }

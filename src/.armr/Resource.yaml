@@ -1,0 +1,1 @@
+location: "[resourceGroup().location]"

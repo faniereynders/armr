@@ -1,5 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -10,13 +11,27 @@ namespace dotnet_az
     [Subcommand(typeof(DeployCommand))]
     class Program
     {
+        [Required, Argument(0)]
+        public string TemplateFile { get; set; }
+
+        [Option]
+        public bool Output { get; set; }
+
         public static int Main(string[] args)
             => CommandLineApplication.Execute<Program>(args);
 
         private void OnExecute()
         {
-            
-            Console.WriteLine($"Hello !");
+            var yaml = File.ReadAllText(TemplateFile);
+            var json = ArmConverter.Convert(yaml);
+
+            File.WriteAllText("template.json", json);
+
+            if (Output)
+            {
+                Console.Write(json);
+
+            }
         }
         //static void Main(string[] args)
         //{

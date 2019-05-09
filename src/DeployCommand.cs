@@ -20,40 +20,11 @@ namespace dotnet_az
         private void OnExecute()
         {
             var yaml = File.ReadAllText(TemplateFile);
-            var json = Convert(yaml);
+            var json = ArmConverter.Convert(yaml);
 
             File.WriteAllText("template.json", json);
         }
 
-        static string Convert(string document)
-        {
-            using (var input = new StringReader(document))
-            {
-                var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(new CamelCaseNamingConvention())
-                    .Build();
-
-                var deploymentTemplate = deserializer.Deserialize<DeploymentTemplate>(input);
-
-                 deploymentTemplate.LinkResources(deploymentTemplate.Resources);
-
-                var contractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                };
-                var jsonSettings = new JsonSerializerSettings
-                {
-                    Formatting = Formatting.Indented,
-                    NullValueHandling = NullValueHandling.Ignore,
-                    ContractResolver = contractResolver
-                };
-                var jsonTemplate = JsonConvert.SerializeObject(deploymentTemplate, jsonSettings);
-
-                return jsonTemplate;
-
-            }
-
-
-        }
+        
     }
 }
