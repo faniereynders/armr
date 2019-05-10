@@ -23,7 +23,7 @@ public class ArmConverter {
 
             var deploymentTemplate = deserializer.Deserialize<DeploymentTemplate> (input);
 
-            deploymentTemplate.ResolveReferences(deploymentTemplate.Resources);
+          //  deploymentTemplate.ResolveReferences(deploymentTemplate.Resources);
 
             var contractResolver = new DefaultContractResolver {
                 NamingStrategy = new CamelCaseNamingStrategy ()
