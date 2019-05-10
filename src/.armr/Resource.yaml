@@ -1,1 +1,3 @@
 location: "[resourceGroup().location]"
+tags:
+  domain: test-domain

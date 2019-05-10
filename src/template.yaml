@@ -8,12 +8,10 @@ variables:
 
 resources:
 - name: FanieAwesomeStorage
-  apiVersion: 2018-07-01
   type: Microsoft.Storage/storageAccounts
   sku:
     name: "[parameters('storageAccountType')]"
-  kind: StorageV2
-
+  
 - name: storage1.yaml
    
 
