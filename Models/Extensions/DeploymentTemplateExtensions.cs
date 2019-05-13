@@ -23,6 +23,7 @@ namespace dotnet_az.Extensions
     }
     public interface IParametersBuilder : IBuilder<Dictionary<string,Parameter>>
     {
+        IParametersBuilder Add<T>(string name, object defaultValue = null, int? minLength = null, int? maxLength = null, int? minValue = null, int? maxValue = null, params object[] allowedValues) where T : Parameter;
         IParametersBuilder String(string name, string defaultValue = null, int? minLength = null, int? maxLength = null, params string[] allowedValues);
         IParametersBuilder SecureString(string name, string defaultValue = null, int? minLength = null, int? maxLength = null, params string[] allowedValues);
         IParametersBuilder Integer(string name, int? defaultValue = null, int? minValue = null, int? maxValue = null, params int[] allowedValues);
@@ -36,6 +37,42 @@ namespace dotnet_az.Extensions
     {
         IVariablesBuilder Define<T>(string name, T value);
         IVariablesBuilder Define(object variable);
+    }
+
+    public interface IResourcesBuilder:IBuilder<IEnumerable<Resource>>
+    {
+        IResourcesBuilder Add<T>() where T : Resource;
+        IResourcesBuilder Add<T>(string name) where T : Resource;
+        IResourcesBuilder Add<T>(T instance) where T : Resource;
+    }
+
+    public class ResourcesBuilder : IResourcesBuilder
+    {
+        private List<Resource> resources = new List<Resource>();
+        public IResourcesBuilder Add<T>() where T : Resource
+        {
+            resources.Add(Activator.CreateInstance<T>());
+            return this;
+        }
+
+        public IResourcesBuilder Add<T>(T instance) where T : Resource
+        {
+            resources.Add(instance);
+            return this;
+        }
+
+        public IResourcesBuilder Add<T>(string name) where T : Resource
+        {
+            var resource = Activator.CreateInstance<T>();
+            resource.Name = name;
+            resources.Add(resource);
+            return this;
+        }
+
+        public IEnumerable<Resource> Build()
+        {
+            return this.resources;
+        }
     }
 
     public interface IFunctionsBuilder : IBuilder<object[]>
@@ -150,6 +187,15 @@ namespace dotnet_az.Extensions
             return parameters;
         }
 
+        
+
+        public IParametersBuilder Add<T>(string name, object defaultValue = null, int? minLength = null, int? maxLength = null, int? minValue = null, int? maxValue = null, params object[] allowedValues) where T : Parameter
+        {
+            var p = Activator.CreateInstance<T>();
+           // parameters.Add(name, p defaultValue, minLength, maxLength, minValue, maxValue, allowedValues);
+            return this;
+        }
+
         //IEnumerator IEnumerable.GetEnumerator()
         //{
         //    return parameters.GetEnumerator();
@@ -168,6 +214,8 @@ namespace dotnet_az.Extensions
     {
         T Build();
     }
+
+    public interface IBuilder: IBuilder<object> { }
 
     public class TemplateBuilder : ITemplateBuilder
     {

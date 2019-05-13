@@ -10,79 +10,129 @@ namespace ConsoleApp1
 {
     class Program
     {
-        //static void Main(string[] args)
-        //{
-        //    var defs = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
-        //        .Where(x => typeof(IArmTemplate2).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
-        //        .Select(x=>x);
-
-        //    foreach (var item in defs)
-        //    {
-        //        var def = (IArmTemplate2)Activator.CreateInstance(item);
-        //        var template = def.Run(Armr.Create()).Build().ToString();
-        //        Console.WriteLine(template);
-        //    }
-
-        //}
         static void Main(string[] args)
         {
+            //var defs = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
+            //    .Where(x => typeof(IArmTemplate).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+            //    .Select(x => x);
+            var defs = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(t => t.GetCustomAttributes(typeof(ArmTemplateAttribute), true).Any());
 
-
-            var template = new DeploymentTemplate();
-
-
-            var arms = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(t => t.GetCustomAttributes(typeof(ArmTemplateAttribute), true).Any());
-
-            foreach (var arm in arms)
+            foreach (var item in defs)
             {
-                var ctr = arm.GetConstructor(new Type[] { typeof(TemplateBuilder) });
+                var def = Activator.CreateInstance(item);
 
-                object instance;
-                if (ctr != null)
-                {
-                    var builder = new TemplateBuilder();
-                    instance = Activator.CreateInstance(arm, builder);
-                    Console.WriteLine(builder.Build().ToString());
-                }
-                else
-                {
-                    instance = Activator.CreateInstance(arm);
-                    var parameters = arm.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(x => x.PropertyType.BaseType == typeof(Parameter));
-                    foreach (var p in parameters)
-                    {
-                        template.Parameters.Add(p.Name, (Parameter)p.GetValue(instance));
-                    }
+                var parametersBuilder = new ParametersBuilder();
+                var variablesBuilder = new VariablesBuilder();
+                var functionsBuilder = new FunctionsBuilder();
+                var resourcesBuilder = new ResourcesBuilder();
 
-                    var resources = arm.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(x => x.PropertyType.BaseType == typeof(Resource));
-                    foreach (var r in resources)
-                    {
-                        var resource = (Resource)r.GetValue(instance);
-                        if (resource.Name == null)
-                        {
-                            resource.Name = r.Name.ToLower();
-                        }
-                        template.Resources.Add(resource);
-                    }
-                    Console.WriteLine(template);
-                }
+                InvokeIfExists(def, "Parameters", false, parametersBuilder);
+                InvokeIfExists(def, "Variables", false, variablesBuilder);
+                InvokeIfExists(def, "Functions", false, functionsBuilder);
+                InvokeIfExists(def, "Resources", true, resourcesBuilder);
 
-                
+               // def.Resources(resourcesBuilder);
+
+                var arm = new DeploymentTemplate(parametersBuilder, resourcesBuilder, variablesBuilder, functionsBuilder);
+
+                Console.WriteLine(arm.ToString());
             }
 
-
-
-
-
-            // var template = def.Run(Armr.Create()).Build().ToString();
-
-
         }
+
+        private static void InvokeIfExists(object instance, string name, bool required = false, params object[] parameters)
+        {
+            var p = instance.GetType().GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (p != null)
+            {
+                p.Invoke(instance, parameters);
+                //def.Parameters(parameters);
+            }
+            else
+            {
+                if (required)
+                {
+                    throw new MissingMethodException(instance.GetType().Name, name);
+                }
+            }
+        }
+        //static void Main(string[] args)
+        //{
+
+
+        //    var template = new DeploymentTemplate();
+
+
+        //    var arms = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(t => t.GetCustomAttributes(typeof(ArmTemplateAttribute), true).Any());
+
+        //    foreach (var arm in arms)
+        //    {
+        //        var ctr = arm.GetConstructor(new Type[] { typeof(TemplateBuilder) });
+
+        //        object instance;
+        //        if (ctr != null)
+        //        {
+        //            var builder = new TemplateBuilder();
+        //            instance = Activator.CreateInstance(arm, builder);
+        //            Console.WriteLine(builder.Build().ToString());
+        //        }
+        //        else
+        //        {
+        //            instance = Activator.CreateInstance(arm);
+        //            var parameters = arm.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public).Where(x => x.PropertyType.BaseType == typeof(Parameter));
+        //            foreach (var p in parameters)
+        //            {
+        //                template.Parameters.Add(p.Name, (Parameter)p.GetValue(instance));
+        //            }
+
+
+
+
+        //            const BindingFlags bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public;
+        //            var fieldResources = arm.GetFields(bindingFlags).Where(x => x.FieldType.BaseType == typeof(Resource)).ToArray();
+        //            var propertyResources = arm.GetProperties(bindingFlags).Where(x => x.PropertyType.BaseType == typeof(Resource));
+        //            foreach (var r in fieldResources)
+        //            {
+        //                var resource = (Resource)r.GetValue(instance);
+        //                if (resource == null)
+        //                {
+        //                    resource = (Resource)Activator.CreateInstance(r.FieldType);
+        //                }
+        //                if (resource.Name == null)
+        //                {
+        //                    resource.Name = r.Name.ToLower();
+        //                }
+        //                template.Resources.Add(resource);
+        //            }
+        //            foreach (var r in propertyResources)
+        //            {
+        //                var resource = (Resource)r.GetValue(instance);
+        //                if (resource.Name == null)
+        //                {
+        //                    resource.Name = r.Name.ToLower();
+        //                }
+        //                template.Resources.Add(resource);
+        //            }
+        //            Console.WriteLine(template);
+        //        }
+
+
+        //    }
+
+
+
+
+
+
+
+
+        //}
 
 
     }
 
 
-    [ArmTemplate]
+   // [ArmTemplate]
     public class MyTemplateExample1
     {
         string myGlobalVariable = "TEST";
@@ -106,13 +156,70 @@ namespace ConsoleApp1
     }
 
     [ArmTemplate]
+    class MyTemplate
+    {
+        void Parameters(IParametersBuilder builder) =>
+            builder
+                .String("MyParam1", "some-default-value")
+                .Integer("MyParam2", maxValue: 200);
+
+        void Variables(IVariablesBuilder builder) =>
+            builder
+                .Define("var1", 100)
+                .Define("var2", 200);
+
+        void Functions(IFunctionsBuilder builder) =>
+            builder
+                .Define("testFunction", new { id = 2 });
+
+        void Resources(IResourcesBuilder builder) =>
+            builder
+                .Add<StorageAccount>("StorageAccount1")
+                .Add<AwesomeStorage>()
+                .Add(new StorageAccount(name: "awesomestorageaccount", apiVersion: "2019-01-01"))
+                .Add(new Resource(name: "custom", type: "Microsoft.Web", apiVersion: "2019-02-01")
+                {
+                    Properties = new Dictionary<string, object>
+                    {
+                       { "test", new { foo = "bar" } }
+                    }
+                });
+    }
+
+    [ArmTemplate]
+    class MyTemplate2
+    {
+        void Parameters(IParametersBuilder builder) =>
+            builder
+                .String("x", "some-default-value");
+
+        
+
+        void Resources(IResourcesBuilder builder) =>
+            builder
+               
+                .Add<AwesomeStorage>()
+                ;
+    }
+
+
+    //  [ArmTemplate]
     public class MyTemplateExample2
     {
 
         StringParameter MyParm1 => new StringParameter(defaultValue: "some-default-value");
         IntParameter MyParm2 => new IntParameter(maxValue: 200);
 
-        StorageAccount StorageAccount1 => StorageAccount.Default();
-        StorageAccount StorageAccount2 => new StorageAccount(name: "awesomestorageaccount", apiVersion: "2019-01-01");
+        Variable var1 => new Variable(100);
+        Variable var2 => new Variable(200);
+
+        StorageAccount StorageAccount1;
+        StorageAccount StorageAccount2 => new AwesomeStorage();
+        StorageAccount StorageAccount3 => new StorageAccount(name: "awesomestorageaccount", apiVersion: "2019-01-01", "northeurope");
+    }
+
+    public class AwesomeStorage : StorageAccount
+    {
+        public override string Name => "awesomestorageaccount1";
     }
 }

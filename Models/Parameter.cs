@@ -1,15 +1,28 @@
-﻿namespace dotnet_az
+﻿using Newtonsoft.Json;
+
+namespace dotnet_az
 {
+
+    public class Variable
+    {
+        public Variable(object value)
+        {
+
+        }
+    }
    
     public abstract class Parameter
     {
+        [JsonProperty(Order = 1)]
         public abstract string Type { get; }
-        //public string Name { get; set; }
+        [JsonProperty(Order = 2)]
+        public object DefaultValue { get; set; }
+
         public Metadata Metadata { get; set; }
     }
     public class StringParameter: Parameter
     {
-        public StringParameter(string defaultValue = null, int? minLength = null, int? maxLength = null, params string[] allowedValues)
+        public StringParameter(string defaultValue = null, int? minLength = null, int? maxLength = null, string[] allowedValues = null)
         {
             
             DefaultValue = defaultValue;
@@ -18,16 +31,20 @@
             AllowedValues = allowedValues;
         }
         public override string Type { get; } = "string";
-        public string DefaultValue { get; set; }
-        public string[] AllowedValues { get; set; }
+
         
+        [JsonProperty(Order = 3)]
+        public string[] AllowedValues { get; set; }
+
+        [JsonProperty(Order = 4)]
         public int? MinLength { get; set; }
+        [JsonProperty(Order = 5)]
         public int? MaxLength { get; set; }
     }
 
     public class SecureStringParameter : StringParameter
     {
-        public SecureStringParameter(string defaultValue = null, int? minLength = null, int? maxLength = null, params string[] allowedValues):
+        public SecureStringParameter(string defaultValue = null, int? minLength = null, int? maxLength = null, string[] allowedValues = null):
             base(defaultValue, minLength, maxLength, allowedValues)
         {
 
@@ -37,7 +54,7 @@
 
     public class IntParameter : Parameter
     {
-        public IntParameter(int? defaultValue = null, int? minValue = null, int? maxValue = null, params int[] allowedValues)
+        public IntParameter(int? defaultValue = null, int? minValue = null, int? maxValue = null, int[] allowedValues = null)
         {
             DefaultValue = defaultValue;
             MinValue = minValue;
@@ -45,10 +62,13 @@
             AllowedValues = allowedValues;
         }
         public override string Type { get; } = "int";
-        public int? DefaultValue { get; set; }
+        
+        [JsonProperty(Order = 3)]
         public int[] AllowedValues { get; set; }
 
+        [JsonProperty(Order = 4)]
         public int? MinValue { get; set; }
+        [JsonProperty(Order = 5)]
         public int? MaxValue { get; set; }
     }
 
@@ -59,18 +79,19 @@
             DefaultValue = defaultValue;
         }
         public override string Type { get; } = "bool";
-        public bool? DefaultValue { get; set; }
+       
         
     }
     public class ObjectParameter : Parameter
     {
-        public ObjectParameter(object defaultValue = null, params object[] allowedValues)
+        public ObjectParameter(object defaultValue = null, object[] allowedValues = null)
         {
             DefaultValue = defaultValue;
             AllowedValues = allowedValues;
         }
         public override string Type { get; } = "object";
-        public object DefaultValue { get; set; }
+        
+        [JsonProperty(Order = 3)]
         public object[] AllowedValues { get; set; }
 
     }
@@ -84,13 +105,13 @@
     }
     public class ArrayParameter : Parameter
     {
-        public ArrayParameter(object[] defaultValue = null, params object[][] allowedValues)
+        public ArrayParameter(object[] defaultValue = null, object[][] allowedValues = null)
         {
             DefaultValue = defaultValue;
             AllowedValues = allowedValues;
         }
         public override string Type { get; } = "array";
-        public object[] DefaultValue { get; set; }
+        
         public object[][] AllowedValues { get; set; }
     }
 }

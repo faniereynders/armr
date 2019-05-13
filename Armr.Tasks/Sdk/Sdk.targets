@@ -1,0 +1,15 @@
+﻿<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+
+  <Target Name="Arm" BeforeTargets="AfterBuild">
+    <Exec Command="dotnet armr $(ProjectDir)\$(OutputPath)$(AssemblyName).dll" />
+  </Target>
+  <ItemGroup>
+    <DotNetCliToolReference Include="armr-proj" Version="1.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Models" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>  

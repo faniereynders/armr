@@ -1,31 +1,27 @@
-﻿
-using dotnet_az;
+﻿using dotnet_az;
 using dotnet_az.Extensions;
-using System;
 
-namespace Sample
+[ArmTemplate]
+class MyTemplate
 {
-    public class Class1
-    {
-        public Class1()
-        {
-            Armr.Create()
-                .UsingSchema("sss")
-                .WithParameters(p => p.WithDefaultValue("foo"));
+    void Parameters(IParametersBuilder builder) =>
+        builder
+            .String("MyParam1", "some-default-value")
+            .Integer("MyParam2", maxValue: 200);
 
+    void Variables(IVariablesBuilder builder) =>
+        builder
+            .Define("var1", 100)
+            .Define("var2", 200);
 
-            var template = new DeploymentTemplate
-            {
-                Parameters =
-                {
-                    { "test", new StringParameter { DefaultValue = "foo"} }
-                }
-            };
+    void Functions(IFunctionsBuilder builder) =>
+        builder
+            .Define("testFunction", new { id = 2 });
 
-            template.Parameters.Add("test", new StringParameter { DefaultValue = "foo" });
-
-
-           // Microsoft.Azure.Management.ResourceManager.Fluent.Models.TargetResource
-        }
-    }
+    void Resources(IResourcesBuilder builder) =>
+        builder
+            .Add<StorageAccount>("StorageAccount2")
+            .Add(new StorageAccount(name: "awesomestorageaccount", apiVersion: "2019-01-01"))
+            ;
 }
+

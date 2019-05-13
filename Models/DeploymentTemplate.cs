@@ -9,19 +9,54 @@ namespace dotnet_az
 {
     public class DeploymentTemplate
     {
-        [JsonProperty("$schema")]
+        public DeploymentTemplate()
+        {
+
+        }
+
+        public DeploymentTemplate(IParametersBuilder parametersBuilder, IResourcesBuilder resourcesBuilder, IVariablesBuilder variablesBuilder, IFunctionsBuilder functionsBuilder)
+        {
+            Resources = resourcesBuilder.Build();
+
+            var parameters = parametersBuilder.Build();
+            if (parameters.Count > 0)
+            {
+                Parameters = parameters;
+            }
+
+            var variables = variablesBuilder.Build();
+            if (variables.Count > 0)
+            {
+                Variables = variables;
+            }
+
+            var functions = functionsBuilder.Build();
+            if (functions.Length > 0)
+            {
+                Functions = functions;
+            }
+        }
+
+        [JsonProperty("$schema", Order = 1)]
         public string Schema { get; set; } = "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#";
+        [JsonProperty(Order = 2)]
         public string ContentVersion { get; set; } = "1.0.0.0";
+        [JsonProperty(Order = 3)]
         public string ApiProfile { get; set; }
-        public Dictionary<string, Parameter> Parameters { get; set; } = new Dictionary<string, Parameter>();
+        [JsonProperty(Order = 4)]
+        public Dictionary<string, Parameter> Parameters { get; set; }
+        [JsonProperty(Order = 5)]
         public Dictionary<string, object> Variables { get; set; }
+        [JsonProperty(Order = 6)]
         public object[] Functions { get; set; }
-        public List<Resource> Resources { get; set; } = new List<Resource>();
+        [JsonProperty(Order = 7)]
+        public IEnumerable<Resource> Resources { get; set; } = new List<Resource>();
+        [JsonProperty(Order = 8)]
         public Dictionary<string,Output> Outputs { get; set; }
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings {  NullValueHandling = NullValueHandling.Ignore, ContractResolver = new CamelCasePropertyNamesContractResolver() });
         }
     }
 
@@ -34,7 +69,10 @@ namespace dotnet_az
 
     public interface IArmTemplate
     {
-        ITemplateBuilder Run(ITemplateBuilder builder);
+        //void Parameters(IParametersBuilder builder);
+        //void Variables(IVariablesBuilder builder);
+        //void Functions(IFunctionsBuilder builder);
+       // void Resources(IResourcesBuilder builder);
     }
 
     public interface IResources : IEnumerable<Resource>
