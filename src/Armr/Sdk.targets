@@ -1,17 +1,20 @@
 ﻿<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <TemplateOutputLocation Condition="'$(OutputLocation)'==''">.</TemplateOutputLocation>
+      <TemplateOutputLocation Condition="'$(OutputLocation)'!=''">$(OutputLocation)</TemplateOutputLocation>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Armr.Sdk" Version="$(Version)" />
   </ItemGroup>
   <Target Name="Arm" BeforeTargets="AfterBuild">
-    <Exec Command="dotnet armr $(ProjectDir)\$(OutputPath)$(AssemblyName).dll" />
+    <Exec Command="dotnet armr $(ProjectDir)\$(OutputPath)$(AssemblyName).dll -o $(TemplateOutputLocation)" />
   </Target>
   <ItemGroup>
     <DotNetCliToolReference Include="Armr.Proj" Version="1.0.*" />
   </ItemGroup>
+  
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+
 </Project>  
