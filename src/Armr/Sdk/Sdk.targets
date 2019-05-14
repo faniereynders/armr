@@ -1,0 +1,18 @@
+﻿<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  
+  <Target Name="Arm" BeforeTargets="AfterBuild">
+    <Exec Command="dotnet armr $(ProjectDir)\$(OutputPath)$(AssemblyName).dll" />
+  </Target>
+  <ItemGroup>
+    <DotNetCliToolReference Include="armr-proj" Version="1.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Armr" Version="1.*" />
+  </ItemGroup>
+
+</Project>  
