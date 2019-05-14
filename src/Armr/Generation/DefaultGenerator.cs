@@ -28,8 +28,6 @@ namespace Armr.Generation
                 InvokeIfExists(def, "Functions", false, functionsBuilder);
                 InvokeIfExists(def, "Resources", true, resourcesBuilder);
 
-                // def.Resources(resourcesBuilder);
-
                 var arm = new DeploymentTemplate(parametersBuilder, resourcesBuilder, variablesBuilder, functionsBuilder);
 
                 templates.Add(item, arm.ToString());
@@ -43,7 +41,6 @@ namespace Armr.Generation
             if (p != null)
             {
                 p.Invoke(instance, parameters);
-                //def.Parameters(parameters);
             }
             else
             {

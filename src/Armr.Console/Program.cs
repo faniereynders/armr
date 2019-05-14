@@ -22,9 +22,7 @@ namespace Armr.Console
             foreach (var template in templates)
             {
                 File.WriteAllText($@"{folder.FullName}\{template.Key.Name}.json", template.Value);
-
             }
-
         }
     }
 }

@@ -1,15 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    
-    <Version>1.0.13</Version>
-   
+    <Version>1.0.14</Version>
   </PropertyGroup>
   <Choose>
     <When Condition="'$(ToolType)'=='global'">
       <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
+        <TargetFrameworks>netcoreapp2.2;netcoreapp2.1</TargetFrameworks>
         <AssemblyName>dotnet-armr</AssemblyName>
         <ToolCommandName>armr</ToolCommandName>
         <PackageId>Armr</PackageId>
@@ -18,7 +15,7 @@
     </When>
     <When Condition="'$(ToolType)'=='project'">
       <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
+        <TargetFrameworks>netcoreapp2.1;netcoreapp2.2</TargetFrameworks>
         <AssemblyName>dotnet-armr</AssemblyName>
         <ToolCommandName>dotnet-armr</ToolCommandName>
         <PackageId>Armr.Proj</PackageId>
@@ -32,19 +29,11 @@
       </PropertyGroup>
     </Otherwise>
   </Choose>
-
   <ItemGroup>
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Armr\Armr.csproj" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(OutputPath)\*.dll">
-      <Pack>true</Pack>
-      <PackagePath>lib\$(TargetFramework)</PackagePath>
-    </Content>
+    <ProjectReference Include="..\Armr\Armr.csproj"/>
   </ItemGroup>
 </Project>
