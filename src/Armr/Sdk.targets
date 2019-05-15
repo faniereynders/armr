@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Armr.Sdk" />
+    <PackageReference Include="Armr.Sdk" Version="$(Version)" />
   </ItemGroup>
   <Target Name="Arm" BeforeTargets="AfterBuild">
     <Exec Command="dotnet armr $(ProjectDir)\$(OutputPath)$(AssemblyName).dll -o $(TemplateOutputLocation)" />
