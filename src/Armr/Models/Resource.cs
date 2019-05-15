@@ -7,18 +7,17 @@ namespace Armr.Models
 
     public class Resource
     {
-        //private static Dictionary<string, string> resourceTypeApiVersions = new Dictionary<string, string>
-        //{
-        //    { "Microsoft.Storage/storageAccounts", "2018-07-01" },
-        //    { "Microsoft.Resources/deployments", "2017-05-10" },
-        //};
+       
 
         public Resource()
         {
 
         }
+        public Resource(string type, string name, string apiVersion = null, string location = null, Dictionary<string, string> tags = null, Dictionary<string, object> properties = null, Sku sku = null, string kind = null, Plan Plan = null, Action<IResourcesBuilder> resources = null)
+        {
 
-        public Resource(string name, string type, string apiVersion, string location = null)
+        }
+        public Resource(string type, string name, string apiVersion = null, string location = null)
         {
             Name = name;
             Type = type;
@@ -36,8 +35,20 @@ namespace Armr.Models
         public virtual string ApiVersion { get; set; }
         [JsonProperty(Order = 3)]
         public virtual string Type { get; set; }
+
+        private string name = "[concat('resource', uniqueString(resourceGroup().id))]";
         [JsonProperty(Order = 4)]
-        public virtual string Name { get; set; }
+        public virtual string Name
+        {
+            get => name;
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    name = value;
+                }
+            }
+        }
 
 
         private string location = "[resourceGroup().location]"; 
@@ -114,11 +125,37 @@ namespace Armr.Models
         }
 
 
-        public override string ApiVersion { get; set; } = "2018-07-01";
+        public override string ApiVersion
+        {
+            get => apiVersion;
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    apiVersion = value;
+                }
+            }
+        }
         public override string Type => "Microsoft.Storage/storageAccounts";
 
-        private string name = "[concat('storage', uniqueString(resourceGroup().id))]";
-        public override string Name { get { return name.ToLower(); } set { name = value; } }
+        private string apiVersion = "2018-07-01";
 
+        private string name = "[concat('storage', uniqueString(resourceGroup().id))]";
+        public override string Name
+        {
+            get => name;
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    name = value;
+                }
+            }
+        }
+    }
+
+    public static class Extensions
+    {
+        
     }
 }
