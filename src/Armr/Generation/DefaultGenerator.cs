@@ -10,23 +10,27 @@ namespace Armr.Generation
     {
         public Dictionary<Type, string> Run(string path)
         {
-            var defs = Assembly.LoadFile(path).GetTypes().Where(t => t.GetCustomAttributes(typeof(ArmTemplateAttribute), true).Any());
+            //var defs = Assembly.LoadFile(path).GetTypes().Where(t => t.GetCustomAttributes(typeof(ArmTemplateAttribute), true).Any());
+            var defs = Assembly.LoadFile(path).GetTypes().Where(t => typeof(ArmTemplate).IsAssignableFrom(t) && !t.IsAbstract);
 
             var templates = new Dictionary<Type, string>();
 
             foreach (var item in defs)
             {
-                var def = Activator.CreateInstance(item);
+                var def = (ArmTemplate)Activator.CreateInstance(item);
 
                 var parametersBuilder = new ParametersBuilder();
                 var variablesBuilder = new VariablesBuilder();
                 var functionsBuilder = new FunctionsBuilder();
                 var resourcesBuilder = new ResourcesBuilder();
+               // var outputs = new ResourcesBuilder();
 
-                InvokeIfExists(def, "Parameters", false, parametersBuilder);
-                InvokeIfExists(def, "Variables", false, variablesBuilder);
-                InvokeIfExists(def, "Functions", false, functionsBuilder);
-                InvokeIfExists(def, "Resources", true, resourcesBuilder);
+
+                def.Parameters(parametersBuilder);
+                def.Functions(functionsBuilder);
+                def.Variables(variablesBuilder);
+                def.Resources(resourcesBuilder);
+                def.Outputs(null);
 
                 var arm = new DeploymentTemplate(parametersBuilder, resourcesBuilder, variablesBuilder, functionsBuilder);
 

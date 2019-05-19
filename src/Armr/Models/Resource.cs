@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Armr.Models
 {
 
-    public class Resource
+    public abstract class Resource
     {
        
 

@@ -5,8 +5,23 @@ using System.Collections.Generic;
 
 namespace Armr.Models
 {
+
+    public abstract class ArmTemplate
+    {
+        public abstract void Resources(IResourcesBuilder builder);
+        public virtual void Parameters(IParametersBuilder builder) { }
+        public virtual void Variables(IVariablesBuilder builder) { }
+        public virtual void Functions(IFunctionsBuilder builder) { }
+        public virtual void Outputs(IOutputsBuilder builder) { }
+    }
+
+
     public class DeploymentTemplate
     {
+        
+
+
+
         public DeploymentTemplate()
         {
 

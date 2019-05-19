@@ -51,7 +51,7 @@ namespace Armr.Models
 
         public IResourcesBuilder Add<T>(T instance) where T : Resource
         {
-            instance = Activator.CreateInstance<T>();
+            //instance = Activator.CreateInstance<T>();
             resources.Add(instance);
             return this;
         }

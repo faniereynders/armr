@@ -1,6 +1,7 @@
 ﻿using Armr.Generation;
 using Armr.Models;
 using McMaster.Extensions.CommandLineUtils;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 
@@ -27,25 +28,28 @@ namespace Armr.Console
         }
     }
 
-    [Armr.Models.ArmTemplate]
-    class TestTemplate
+    //[Armr.Models.ArmTemplate]
+    class TestTemplate : ArmTemplate
     {
-        void Resources(IResourcesBuilder builder) =>
+        WebApp webapp = new WebApp
+        {
+            Name = "TestApp",
+            Tags = new Dictionary<string, string>
+            {
+                { "tag","test" }
+            }
+        };
+
+        public override void Resources(IResourcesBuilder builder) =>
             builder
-                .Add("version", "type", "name1")
-             //   .Add<Resource>()
                 .Add<StorageAccount>()
-                .Add<StorageAccount>(name: "name2", resources: r =>
-                    r.Add(
-                        name: "childname",
-                        type: "type",
-                        apiVersion: "version"
-                    ).Add(
-                        name: "childname2",
-                        type: "type",
-                        apiVersion: "version",
-                        resources: rr=>rr.Add<StorageAccount>()
-                    )
-                );
+                .Add(webapp);
+
+        public override void Parameters(IParametersBuilder builder) =>
+            builder.String("foo");
+    }
+
+    public class WebApp : Resource {
+        public override string Type => "Microsoft.Web/sites";
     }
 }
