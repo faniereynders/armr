@@ -21,10 +21,21 @@ namespace Armr.Sample
                 .Add(new StorageAccount(name: "awesomestorageaccount", apiVersion: "2019-01-01"))
                 .Add(webapp);
 
-        public override void Parameters(IParametersBuilder builder) =>
+        public override void Parameters(IParametersBuilder builder)
+        {
             builder
+                .String("foo", "fooValue")
                 .String("MyParam1", "some-default-value")
                 .Integer("MyParam2", maxValue: 200);
+        }
+
+        //public Dictionary<string, Parameter> Parameters2()
+        //{
+        //    return new Dictionary<string, Parameter>
+        //    {
+        //        {"foo", new StringParameter() }
+        //    };
+        //}
 
         public override void Variables(IVariablesBuilder builder) =>
             builder

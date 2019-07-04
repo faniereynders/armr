@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr", "Armr\Armr.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr.Console", "Armr.Console\Armr.Console.csproj", "{B32940D2-3805-440D-AE4E-A2E252170833}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armr.Sample", "Armr.Sample\Armr.Sample.csproj", "{1999E0A1-BABD-41B7-AC1B-719E446E9FA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr.Sample", "Armr.Sample\Armr.Sample.csproj", "{1999E0A1-BABD-41B7-AC1B-719E446E9FA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
