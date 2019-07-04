@@ -28,28 +28,6 @@ namespace Armr.Console
         }
     }
 
-    //[Armr.Models.ArmTemplate]
-    class TestTemplate : ArmTemplate
-    {
-        WebApp webapp = new WebApp
-        {
-            Name = "TestApp",
-            Tags = new Dictionary<string, string>
-            {
-                { "tag","test" }
-            }
-        };
 
-        public override void Resources(IResourcesBuilder builder) =>
-            builder
-                .Add<StorageAccount>()
-                .Add(webapp);
-
-        public override void Parameters(IParametersBuilder builder) =>
-            builder.String("foo");
-    }
-
-    public class WebApp : Resource {
-        public override string Type => "Microsoft.Web/sites";
-    }
+    
 }
