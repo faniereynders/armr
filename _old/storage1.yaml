@@ -1,4 +1,0 @@
-﻿name: Storage1
-apiVersion: 2019-07-01
-type: "Microsoft.Storage/storageAccounts"
-kind: StorageV3

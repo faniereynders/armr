@@ -1,5 +1,0 @@
-{
-    "yaml.schemas": {
-        "https://raw.githubusercontent.com/faniereynders/dotnet-az/master/schemas/deploymentTemplate.json#": "/*.yml"
-    }
-}

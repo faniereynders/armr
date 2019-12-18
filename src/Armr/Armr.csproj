@@ -1,24 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
-    <AssemblyName>Armr.Sdk</AssemblyName>
-    <Version>1.2.2</Version>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Armr</AssemblyName>
   </PropertyGroup>
-  <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Sdk.props">
-      <Pack>true</Pack>
-      <PackagePath>Sdk</PackagePath>
-    </None>
-    <None Include="Sdk.targets">
-      <Pack>true</Pack>
-      <PackagePath>Sdk</PackagePath>
-    </None>
-    <None Include=".config/**">
-      <Pack>true</Pack>
-      <PackagePath>.config</PackagePath>
-    </None>
-  </ItemGroup>
- 
+
 </Project>

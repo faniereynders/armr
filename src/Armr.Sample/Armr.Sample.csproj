@@ -1,9 +1,12 @@
-﻿<Project Sdk="Armr.Sdk/1.2.2">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PublishSingleFile>true</PublishSingleFile>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Armr.Sdk" Version="1.2.2"  />
+    <PackageReference Include="Armr.Azure" Version="1.0.0" />
   </ItemGroup>
+
 </Project>

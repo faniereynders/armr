@@ -1,7 +1,0 @@
-apiVersion: 2018-07-01
-kind: StorageV2
-sku:
-  name: Standard_LRS
-  tier: Standard
-tags:
-  domain: test-domain2
