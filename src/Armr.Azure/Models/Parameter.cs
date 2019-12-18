@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-
+﻿
 namespace Armr.Models
 {
 
@@ -13,9 +12,9 @@ namespace Armr.Models
    
     public abstract class Parameter
     {
-        [JsonProperty(Order = 1)]
+        
         public abstract string Type { get; }
-        [JsonProperty(Order = 2)]
+      
         public object DefaultValue { get; set; }
 
         public Metadata Metadata { get; set; }
@@ -33,12 +32,12 @@ namespace Armr.Models
         public override string Type { get; } = "string";
 
         
-        [JsonProperty(Order = 3)]
+     
         public string[] AllowedValues { get; set; }
 
-        [JsonProperty(Order = 4)]
+       
         public int? MinLength { get; set; }
-        [JsonProperty(Order = 5)]
+       
         public int? MaxLength { get; set; }
     }
 
@@ -63,12 +62,12 @@ namespace Armr.Models
         }
         public override string Type { get; } = "int";
         
-        [JsonProperty(Order = 3)]
+      
         public int[] AllowedValues { get; set; }
 
-        [JsonProperty(Order = 4)]
+       
         public int? MinValue { get; set; }
-        [JsonProperty(Order = 5)]
+       
         public int? MaxValue { get; set; }
     }
 
@@ -91,7 +90,7 @@ namespace Armr.Models
         }
         public override string Type { get; } = "object";
         
-        [JsonProperty(Order = 3)]
+       
         public object[] AllowedValues { get; set; }
 
     }

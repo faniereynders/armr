@@ -1,20 +1,25 @@
-﻿<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="Current" 
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <TemplateOutputLocation Condition="'$(OutputLocation)'==''">.</TemplateOutputLocation>
-      <TemplateOutputLocation Condition="'$(OutputLocation)'!=''">$(OutputLocation)</TemplateOutputLocation>
+    <TemplateOutputLocation Condition="'$(OutputLocation)'!=''">$(OutputLocation)</TemplateOutputLocation>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Armr.Sdk" Version="$(Version)" />
+    <!--<PackageReference Include="Armr.Sdk" />-->
   </ItemGroup>
-  <Target Name="Arm" BeforeTargets="AfterBuild">
+  <!-- <Target Name="Arm" BeforeTargets="AfterBuild">
     <Exec Command="dotnet armr $(ProjectDir)\$(OutputPath)$(AssemblyName).dll -o $(TemplateOutputLocation)" />
-  </Target>
-  <ItemGroup>
-    <DotNetCliToolReference Include="Armr.Proj" Version="1.0.*" />
-  </ItemGroup>
-  
-  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+  </Target> -->
 
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+  <Target Name="Arm2" BeforeTargets="AfterBuild">
+    <Exec Command="dotnet armr $(ProjectDir)$(OutputPath)$(AssemblyName).dll -o $(TemplateOutputLocation)" />
+  </Target>
+  <Target Name="Arm1" BeforeTargets="Restore">
+    <!-- <Exec Command="dotnet new tool-manifest" /> -->
+    <Exec Condition="!Exists('.config')" Command="xcopy $(MSBuildThisFileDirectory)..\.config .config\ /D"/>
+    <Exec Command="dotnet tool restore" />
+  </Target>
 </Project>  

@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr.Console", "Armr.Consol
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr.Sample", "Armr.Sample\Armr.Sample.csproj", "{1999E0A1-BABD-41B7-AC1B-719E446E9FA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armr.Azure", "Armr.Azure\Armr.Azure.csproj", "{12F1A318-B395-4652-BE67-F586BA96CEBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armr.Abstractions", "Armr.Abstractions\Armr.Abstractions.csproj", "{3F4265CC-9328-4305-99E5-0D3610ADC295}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{1999E0A1-BABD-41B7-AC1B-719E446E9FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1999E0A1-BABD-41B7-AC1B-719E446E9FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1999E0A1-BABD-41B7-AC1B-719E446E9FA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F1A318-B395-4652-BE67-F586BA96CEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F1A318-B395-4652-BE67-F586BA96CEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F1A318-B395-4652-BE67-F586BA96CEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F1A318-B395-4652-BE67-F586BA96CEBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F4265CC-9328-4305-99E5-0D3610ADC295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F4265CC-9328-4305-99E5-0D3610ADC295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F4265CC-9328-4305-99E5-0D3610ADC295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F4265CC-9328-4305-99E5-0D3610ADC295}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

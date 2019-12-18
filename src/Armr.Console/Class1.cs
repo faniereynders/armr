@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Armr.Sample
 {
-    class TestTemplate : ArmTemplate
+    class TestTemplate : Armr.Models.ArmTemplateBuilder
     {
         public TestTemplate()
         {

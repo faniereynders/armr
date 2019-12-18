@@ -2,10 +2,9 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
     <AssemblyName>Armr.Sdk</AssemblyName>
-    <Version>1.0.2</Version>
+    <Version>1.2.2</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sdk.props">
@@ -16,5 +15,10 @@
       <Pack>true</Pack>
       <PackagePath>Sdk</PackagePath>
     </None>
+    <None Include=".config/**">
+      <Pack>true</Pack>
+      <PackagePath>.config</PackagePath>
+    </None>
   </ItemGroup>
+ 
 </Project>

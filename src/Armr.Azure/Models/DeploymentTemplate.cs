@@ -1,33 +1,59 @@
 ﻿
+using Armr.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Armr.Models
 {
 
-    public abstract class ArmTemplate
+    public abstract class ArmTemplateBuilder:IDeploymentTemplateBuilder
     {
         public abstract void Resources(IResourcesBuilder builder);
         public virtual void Parameters(IParametersBuilder builder) { }
         public virtual void Variables(IVariablesBuilder builder) { }
         public virtual void Functions(IFunctionsBuilder builder) { }
         public virtual void Outputs(IOutputsBuilder builder) { }
+
+        public Task<IDeploymentTemplate> Build()
+        {
+            var parametersBuilder = new ParametersBuilder();
+            var variablesBuilder = new VariablesBuilder();
+            var functionsBuilder = new FunctionsBuilder();
+            var resourcesBuilder = new ResourcesBuilder();
+            // var outputs = new ResourcesBuilder();
+
+
+            Parameters(parametersBuilder);
+            Functions(functionsBuilder);
+            Variables(variablesBuilder);
+            Resources(resourcesBuilder);
+            Outputs(null);
+
+            var arm = new ArmDeploymentTemplate(parametersBuilder, resourcesBuilder, variablesBuilder, functionsBuilder);
+
+            return Task.FromResult((IDeploymentTemplate)arm);
+
+        }
     }
 
 
-    public class DeploymentTemplate
+    public class ArmDeploymentTemplate:IDeploymentTemplate
     {
         
 
 
 
-        public DeploymentTemplate()
+        public ArmDeploymentTemplate()
         {
 
         }
 
-        public DeploymentTemplate(IParametersBuilder parametersBuilder, IResourcesBuilder resourcesBuilder, IVariablesBuilder variablesBuilder, IFunctionsBuilder functionsBuilder)
+        public ArmDeploymentTemplate(IParametersBuilder parametersBuilder, IResourcesBuilder resourcesBuilder, IVariablesBuilder variablesBuilder, IFunctionsBuilder functionsBuilder)
         {
             Resources = resourcesBuilder.Build();
 
@@ -50,26 +76,35 @@ namespace Armr.Models
             }
         }
 
-        [JsonProperty("$schema", Order = 1)]
+        [JsonPropertyName("$schema")]
         public string Schema { get; set; } = "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#";
-        [JsonProperty(Order = 2)]
-        public string ContentVersion { get; set; } = "1.0.0.0";
-        [JsonProperty(Order = 3)]
-        public string ApiProfile { get; set; }
-        [JsonProperty(Order = 4)]
-        public Dictionary<string, Parameter> Parameters { get; set; }
-        [JsonProperty(Order = 5)]
-        public Dictionary<string, object> Variables { get; set; }
-        [JsonProperty(Order = 6)]
-        public object[] Functions { get; set; }
-        [JsonProperty(Order = 7)]
-        public IEnumerable<Resource> Resources { get; set; } = new List<Resource>();
-        [JsonProperty(Order = 8)]
-        public Dictionary<string,Output> Outputs { get; set; }
 
+        public string ContentVersion { get; set; } = "1.0.0.0";
+
+        public string ApiProfile { get; set; }
+
+        public Dictionary<string, Parameter> Parameters { get; set; }
+
+        public Dictionary<string, object> Variables { get; set; }
+
+        public object[] Functions { get; set; }
+
+        public IEnumerable<Resource> Resources { get; set; } = new List<Resource>();
+
+        public IDictionary<string,Output> Outputs { get; set; }
+
+        public object Deployment => this;
+
+        public Task Run()
+        {
+           
+            
+            return Task.FromResult(this);
+        }
+        
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings {  NullValueHandling = NullValueHandling.Ignore, ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            return JsonConvert.SerializeObject(this, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, Formatting = Formatting.Indented, NullValueHandling = NullValueHandling.Ignore, ContractResolver =  new CamelCasePropertyNamesContractResolver()  });
         }
     }
 

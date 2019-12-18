@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <Version>1.0.14</Version>
+    <Version>1.0.18</Version>
   </PropertyGroup>
   <Choose>
     <When Condition="'$(ToolType)'=='global'">
       <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.2;netcoreapp2.1</TargetFrameworks>
+        <TargetFrameworks>netcoreapp2.2;netcoreapp2.1;netcoreapp3.0</TargetFrameworks>
         <AssemblyName>dotnet-armr</AssemblyName>
         <ToolCommandName>armr</ToolCommandName>
         <PackageId>Armr</PackageId>
@@ -30,10 +30,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <PackageReference Include="Armr.Azure" Version="1.0.0" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="0.3.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Armr\Armr.csproj"/>
+    <ProjectReference Include="..\Armr.Abstractions\Armr.Abstractions.csproj" />
+    <ProjectReference Include="..\Armr\Armr.csproj" />
   </ItemGroup>
 </Project>

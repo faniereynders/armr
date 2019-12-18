@@ -9,7 +9,7 @@ namespace Armr.Models
     }
 
 
-    public interface ITemplateBuilder : IBuilder<DeploymentTemplate>
+    public interface ITemplateBuilder : IBuilder<ArmDeploymentTemplate>
     {
         ITemplateBuilder Schema(string schemaUrl);
         ITemplateBuilder ContentVersion(string version);
@@ -236,10 +236,10 @@ namespace Armr.Models
 
     public class TemplateBuilder : ITemplateBuilder
     {
-        private DeploymentTemplate template;
+        private ArmDeploymentTemplate template;
         public TemplateBuilder()
         {
-            template = new DeploymentTemplate();
+            template = new ArmDeploymentTemplate();
         }
         public ITemplateBuilder Schema(string schemaUrl)
         {
@@ -271,7 +271,7 @@ namespace Armr.Models
             return this;
         }
 
-        public DeploymentTemplate Build()
+        public ArmDeploymentTemplate Build()
         {
 
 
