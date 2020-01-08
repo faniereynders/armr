@@ -1,5 +1,4 @@
-﻿
-namespace Armr.Azure
+﻿namespace Armr.Azure
 {
     public class Sku
     {
@@ -7,7 +6,6 @@ namespace Armr.Azure
         public string Tier { get; set; }
         public string Size { get; set; }
         public string Family { get; set; }
-        public string Capacity { get; set; }
+        public int Capacity { get; set; }
     }
-
 }

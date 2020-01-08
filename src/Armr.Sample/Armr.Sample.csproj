@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Armr.Azure" Version="1.0.0" />
+    <ProjectReference Include="..\Armr.Aws\Armr.Aws.csproj" />
+    <ProjectReference Include="..\Armr.Azure\Armr.Azure.csproj" />
+    <ProjectReference Include="..\Armr\Armr.csproj" />
   </ItemGroup>
 
 </Project>

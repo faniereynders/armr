@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr", "Armr\Armr.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr.Azure", "Armr.Azure\Armr.Azure.csproj", "{12F1A318-B395-4652-BE67-F586BA96CEBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armr.Sample", "Armr.Sample\Armr.Sample.csproj", "{8480ABC6-9675-4592-8935-09F55BAAE54F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Armr.Sample", "Armr.Sample\Armr.Sample.csproj", "{8480ABC6-9675-4592-8935-09F55BAAE54F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Armr.Aws", "Armr.Aws\Armr.Aws.csproj", "{EE5E8692-4D50-4F5D-90A3-053B4300E42C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{8480ABC6-9675-4592-8935-09F55BAAE54F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8480ABC6-9675-4592-8935-09F55BAAE54F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8480ABC6-9675-4592-8935-09F55BAAE54F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE5E8692-4D50-4F5D-90A3-053B4300E42C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE5E8692-4D50-4F5D-90A3-053B4300E42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE5E8692-4D50-4F5D-90A3-053B4300E42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE5E8692-4D50-4F5D-90A3-053B4300E42C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
