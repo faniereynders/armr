@@ -93,7 +93,7 @@ namespace Armr.Azure
             resource.Plan = plan;
             return (TBuilder)this;
         }
-        public TBuilder Resources(Action<ResourcesBuilder> builderAction = null)
+        public TBuilder Resources(Action<IResourcesBuilder> builderAction = null)
         {
             var b = new ResourcesBuilder();
             builderAction(b);

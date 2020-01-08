@@ -2,12 +2,11 @@
 
 namespace Armr.Azure
 {
-    public static class Functions
+    public partial class Functions
     {
-        public static DynamicString ResourceId<T>(object name) where T: IResourceType
+        public static DynamicString ResourceId(string type, object name)
         {
-            var resource = Activator.CreateInstance<T>();
-            return new DynamicString($"resourceId('{ resource.Type }', {name})");
+            return new DynamicString($"resourceId('{ type }', {name})");
         }
         public static DynamicString Variables(string name) => 
             new DynamicString($"variables('{ name }')");

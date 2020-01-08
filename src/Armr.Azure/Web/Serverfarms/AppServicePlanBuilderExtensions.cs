@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Armr.Azure.Web.Serverfarms;
+using System;
 
 namespace Armr.Azure
 {
     public static class AppServicePlanBuilderExtensions
     {
-        public static ResourcesBuilder AppServicePlan(this ResourcesBuilder helper, string name, Action<AppServicePlanBuilder> builderAction = null)
+        public static IResourcesBuilder AppServicePlan(this IResourcesBuilder helper, string name, Action<IAppServicePlanBuilder> builderAction = null)
         {
             var builder = new AppServicePlanBuilder();
             builder.ApiVersion("2018-02-01");
@@ -12,7 +13,7 @@ namespace Armr.Azure
             builder.Name(name);
             builder.Location(ResourceGroup.Location);
             builderAction?.Invoke(builder);
-            helper.resources.Add(builder.Build());
+            helper.Resources.Add(builder.Build());
             return helper;
         }
     }

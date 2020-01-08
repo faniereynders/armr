@@ -30,7 +30,7 @@ namespace Armr.Azure
 
         public virtual IEnumerable<Function> Functions { get; set; }
 
-        public IEnumerable<Resource> Resources { get; set; } = new List<Resource>();
+        public IEnumerable<IResource> Resources { get; set; } = new List<Resource>();
 
         public virtual IDictionary<string, object> Outputs { get; set; }
 

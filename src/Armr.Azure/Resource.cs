@@ -2,7 +2,7 @@
 
 namespace Armr.Azure
 {
-    public class Resource : IResourceType
+    public class Resource : IResourceType, IResource
     {
         public string Condition { get; set; }
         public string ApiVersion { get; set; }
@@ -12,7 +12,7 @@ namespace Armr.Azure
 
         public IDictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
 
-        public IEnumerable<Resource> Resources { get; set; }
+        public IEnumerable<IResource> Resources { get; set; }
         public Sku Sku { get; set; }
         public string Location { get; internal set; }
         public Dictionary<string,string> Tags { get; internal set; }

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 
 namespace Armr.Azure
 {
-    public partial class ResourcesBuilder : IBuilder<IEnumerable<Resource>>
+    public partial class ResourcesBuilder : IBuilder<IEnumerable<IResource>>, IResourcesBuilder
     {
-        internal readonly List<Resource> resources;
+        internal readonly List<IResource> resources;
+
+        IList<IResource> IResourcesBuilder.Resources => resources;
+
         public ResourcesBuilder()
         {
-            resources = new List<Resource>();
+            resources = new List<IResource>();
         }
         public ResourcesBuilder Resource(string apiVersion, string type, string name, Action<ResourceBuilder> builderAction = null)
         {
@@ -23,7 +26,7 @@ namespace Armr.Azure
             return this;
         }
 
-        public IEnumerable<Resource> Build()
+        public IEnumerable<IResource> Build()
         {
             return resources;
         }

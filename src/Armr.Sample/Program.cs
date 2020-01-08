@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Armr.Azure;
 using Armr.Aws;
 using static Armr.Azure.Functions;
+using Armr.Azure.Web.Serverfarms;
 
 namespace Sample
 {
@@ -45,11 +46,13 @@ namespace Sample
                      .Define(webAppPortalName, Concat(Parameters(webAppName), "-webapp"))
                      .Define(appServicePlanName, Concat("AppServicePlan", Parameters(webAppName))))
 
+                 
+
                  .Resources(_ => _
                     .AppServicePlan(Variables("appServicePlanName"), plan =>
                         plan.Sku(Parameters(sku)))
                     .AppService(Variables(webAppPortalName), site =>
-                        site.ServerFarm(ResourceId<AppServicePlan>(Variables(appServicePlanName)))))
+                        site.ServerFarm(Id.AppServicePlan(Variables(appServicePlanName)))))
 
                  .Build()
                  .Run(t => Console.WriteLine(t));
