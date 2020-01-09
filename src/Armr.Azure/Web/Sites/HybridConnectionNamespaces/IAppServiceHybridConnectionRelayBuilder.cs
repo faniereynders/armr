@@ -1,6 +1,6 @@
 ﻿namespace Armr.Azure.Web.Sites.HybridConnectionNamespaces
 {
-    public interface IAppServiceHybridConnectionRelayBuilder
+    public interface IAppServiceHybridConnectionRelayBuilder:IResourceBuilder<AppServiceHybridConnectionRelayBuilder>
     {
         public IAppServiceHybridConnectionRelayBuilder Namespace(string @namespace);
         public IAppServiceHybridConnectionRelayBuilder Suffix(string suffix);

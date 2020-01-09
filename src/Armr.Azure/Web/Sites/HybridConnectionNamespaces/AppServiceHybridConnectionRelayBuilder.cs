@@ -1,6 +1,6 @@
 ﻿namespace Armr.Azure.Web.Sites.HybridConnectionNamespaces
 {
-    internal class AppServiceHybridConnectionRelayBuilder :
+    public class AppServiceHybridConnectionRelayBuilder :
         ResourceBuilder<AppServiceHybridConnectionRelay, AppServiceHybridConnectionRelayBuilder>,
         IAppServiceHybridConnectionRelayBuilder
     {
