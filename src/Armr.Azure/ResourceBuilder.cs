@@ -7,7 +7,7 @@ namespace Armr.Azure
         public new ResourceBuilder Sku(Action<SkuBuilder> builderAction) => base.Sku(builderAction);
     }
 
-    public class ResourceBuilder<T, TBuilder> : IBuilder<Resource> where T : Resource where TBuilder : ResourceBuilder<T, TBuilder>
+    public class ResourceBuilder<T, TBuilder> : IBuilder<Resource>, IResourceBuilder<TBuilder> where T : Resource where TBuilder : ResourceBuilder<T, TBuilder>
     {
         protected readonly T resource;
 
@@ -67,6 +67,8 @@ namespace Armr.Azure
             resource.DependsOn = dependencies;
             return (TBuilder)this;
         }
+
+
 
         public TBuilder Properties(Action<PropertiesBuilder> propertiesBuilder)
         {

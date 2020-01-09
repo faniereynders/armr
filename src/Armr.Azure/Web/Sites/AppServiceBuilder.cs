@@ -1,4 +1,6 @@
-﻿namespace Armr.Azure.Web.Sites
+﻿using System;
+
+namespace Armr.Azure.Web.Sites
 {
 
     public class AppServiceBuilder : ResourceBuilder<AppService, AppServiceBuilder>, IAppServiceBuilder
@@ -9,6 +11,15 @@
 
             return this;
         }
+
+        public IAppServiceBuilder Resources(Action<IAppServiceResourcesBuilder> builderAction = null)
+        {
+            var b = new AppServiceResourcesBuilder();
+            builderAction(b);
+            resource.Resources = b.Build();
+            return this;
+        }
+
     }
 }
 

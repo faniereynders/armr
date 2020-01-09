@@ -66,7 +66,7 @@ namespace Armr.Azure
 
         }
 
-        public AzureResourceManagerTemplateBuilder Resources(Action<ResourcesBuilder> builderAction)
+        public AzureResourceManagerTemplateBuilder Resources(Action<IResourcesBuilder> builderAction)
         {
             var builder = new ResourcesBuilder();
             builderAction(builder);

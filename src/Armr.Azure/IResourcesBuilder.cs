@@ -2,8 +2,18 @@
 
 namespace Armr.Azure
 {
-    public interface IResourcesBuilder
+    public interface IResourcesBuilderBase
     {
         internal IList<IResource> Resources { get; }
+    }
+
+    public partial interface IResourcesBuilder : IResourcesBuilderBase
+    {
+
+    }
+
+    public interface IChildResourcesBuilder : IResourcesBuilderBase
+    {
+
     }
 }

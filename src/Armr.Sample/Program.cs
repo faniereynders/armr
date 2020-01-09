@@ -12,25 +12,7 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("AWS: \r\n");
-
-
-            Aws.Create()
-
-                .Resources(_ => _
-                    .Resource("HelloBucket", "AWS::S3::Bucket")
-                    .S3Bucket("Hey"))
-
-                .Build()
-                .Run(t => Console.WriteLine(t.AsYaml()));
-
-
-
-
-
-            //Console.WriteLine();
-            //Console.WriteLine("Azure: \r\n");
-
+            
             const string webAppName = nameof(webAppName);
             const string webAppPortalName = nameof(webAppPortalName);
             const string appServicePlanName = nameof(appServicePlanName);
@@ -46,13 +28,43 @@ namespace Sample
                      .Define(webAppPortalName, Concat(Parameters(webAppName), "-webapp"))
                      .Define(appServicePlanName, Concat("AppServicePlan", Parameters(webAppName))))
 
-                 
+
 
                  .Resources(_ => _
-                    .AppServicePlan(Variables("appServicePlanName"), plan =>
-                        plan.Sku(Parameters(sku)))
-                    .AppService(Variables(webAppPortalName), site =>
-                        site.ServerFarm(Id.AppServicePlan(Variables(appServicePlanName)))))
+                    
+                 
+
+                    .AppService("app",site => site
+                        
+
+                        .Resources(r => {
+                            
+                            r.HybridConnectionRelay("hcName", hc =>
+                            {
+                                hc.RelayName("relay");
+                                hc.Host("server.local", 8080);
+                            });
+                        }))
+
+                 
+
+
+                    //.AppServicePlan(Variables("appServicePlanName"), plan =>
+                    //    plan.Sku(Parameters(sku)))
+
+                    //.AppService("ggg", site =>
+                    //{
+                    //    site
+                    //        .Kind("kind")
+                    //        .Resources(r => r
+                                
+                    //            .HybridConnectionRelay("name", hc => hc
+                    //                .HostName("fff").Port(40)));
+                           
+                    //})
+                    )
+                    
+
 
                  .Build()
                  .Run(t => Console.WriteLine(t));

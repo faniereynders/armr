@@ -7,7 +7,7 @@ namespace Armr.Azure
     {
         internal readonly List<IResource> resources;
 
-        IList<IResource> IResourcesBuilder.Resources => resources;
+        IList<IResource> IResourcesBuilderBase.Resources => resources;
 
         public ResourcesBuilder()
         {

@@ -5,7 +5,7 @@ namespace Armr.Azure
 {
     public static class AppServicePlanBuilderExtensions
     {
-        public static IResourcesBuilder AppServicePlan(this IResourcesBuilder helper, string name, Action<IAppServicePlanBuilder> builderAction = null)
+        public static IResourcesBuilderBase AppServicePlan(this IResourcesBuilderBase helper, string name, Action<IAppServicePlanBuilder> builderAction = null)
         {
             var builder = new AppServicePlanBuilder();
             builder.ApiVersion("2018-02-01");

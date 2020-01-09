@@ -1,12 +1,13 @@
 ﻿using Armr.Azure.Web.Sites;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Armr.Azure
 {
-    public static class AppServiceBuilderExtensions
+    public partial class ResourcesBuilder : IAppServiceDefintion
     {
-
-        public static IResourcesBuilder AppService(this IResourcesBuilder helper, string name, Action<IAppServiceBuilder> builderAction = null)
+        public IResourcesBuilder AppService(string name, Action<IAppServiceBuilder> builderAction = null)
         {
             var builder = new AppServiceBuilder();
             builder.ApiVersion("2018-11-01");
@@ -15,9 +16,8 @@ namespace Armr.Azure
             builder.Name(name);
             builder.Location(ResourceGroup.Location);
             builderAction?.Invoke(builder);
-            helper.Resources.Add(builder.Build());
-            return helper;
+            resources.Add(builder.Build());
+            return this;
         }
     }
 }
-
