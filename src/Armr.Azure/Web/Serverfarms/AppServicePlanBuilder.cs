@@ -2,7 +2,7 @@
 
 namespace Armr.Azure.Web.Serverfarms
 {
-    internal class AppServicePlanBuilder : ResourceBuilder<AppServicePlan, AppServicePlanBuilder>, IAppServicePlanBuilder, IAppServicePlanBuilder1
+    public class AppServicePlanBuilder : ResourceBuilder<AppServicePlan, AppServicePlanBuilder>, IAppServicePlanBuilder
     {
         public IAppServicePlanBuilder Sku(string name, Action<SkuDescriptionBuilder> builderAction = null)
         {

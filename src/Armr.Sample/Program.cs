@@ -12,63 +12,43 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            
-            const string webAppName = nameof(webAppName);
-            const string webAppPortalName = nameof(webAppPortalName);
-            const string appServicePlanName = nameof(appServicePlanName);
-            const string sku = nameof(sku);
-            const string location = nameof(location);
 
             Azure.Create()
-                 .Parameters(_ => _
-                     .String(webAppName)
-                     .String(sku))
+                .Parameters(_ =>
+                {
+                    _.String("webAppName", p => p
+                       .Description("Base name of the resource such as web app name and app service plan")
+                       .MinLength(2))
+                   .String("sku", p => p
+                       .DefaultValue("S1")
+                       .Description("The SKU of App Service Plan, by default is Standard S1"))
+                   .String("location", p => p
+                       .DefaultValue(ResourceGroup.Location)
+                       .Description("Location for all resources"));
+                })
 
-                 .Variables(_ => _
-                     .Define(webAppPortalName, Concat(Parameters(webAppName), "-webapp"))
-                     .Define(appServicePlanName, Concat("AppServicePlan", Parameters(webAppName))))
+                .Variables(_ =>
+                {
+                    _.Define("webAppPortalName", Concat(Parameters("webAppName"), "-webapp"))
+                    .Define("appServicePlanName", Concat("AppServicePlan-", Parameters("webAppName")));
+                })
 
+                .Resources(_ =>
+                {
 
+                    _.AppServicePlan(Variables("appServicePlanName"), r => r
+                        .Sku(Parameters("sku")))
 
-                 .Resources(_ => _
-                    
-                 
+                     .AppService(Variables("webAppPortalName"), site => site
+                        .ServerFarm(Variables("appServicePlanName"))
+                        .Location(Parameters("location"))
+                        .DependsOn(Id.AppServicePlan(Variables("appServicePlanName"))));
+                })
 
-                    .AppService("app",site => site
-                        
+                .Build()
 
-                        .Resources(r => {
-                            
-                            r.HybridConnectionRelay("hcName", hc =>
-                            {
-                                
-                                hc.RelayName("relay");
-                                hc.Host("server.local", 8080);
-                            });
-                        }))
+                .Run(t => Console.WriteLine(t));
 
-                 
-
-
-                    //.AppServicePlan(Variables("appServicePlanName"), plan =>
-                    //    plan.Sku(Parameters(sku)))
-
-                    //.AppService("ggg", site =>
-                    //{
-                    //    site
-                    //        .Kind("kind")
-                    //        .Resources(r => r
-                                
-                    //            .HybridConnectionRelay("name", hc => hc
-                    //                .HostName("fff").Port(40)));
-                           
-                    //})
-                    )
-                    
-
-
-                 .Build()
-                 .Run(t => Console.WriteLine(t));
 
 
 

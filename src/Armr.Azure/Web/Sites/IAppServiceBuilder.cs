@@ -2,7 +2,7 @@
 
 namespace Armr.Azure.Web.Sites
 {
-    public interface IAppServiceBuilder:IResourceBuilder<AppServiceBuilder>
+    public interface IAppServiceBuilder : IResourceBuilder<AppServiceBuilder>
     {
         IAppServiceBuilder ServerFarm(string name);
 
