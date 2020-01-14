@@ -13,7 +13,8 @@ namespace Sample
         static void Main(string[] args)
         {
 
-            Azure.Create()
+            Azure
+                .Create()
                 .Parameters(_ =>
                 {
                     _.String("webAppName", p => p
@@ -47,7 +48,25 @@ namespace Sample
 
                 .Build()
 
-                .Run(t => Console.WriteLine(t));
+                .Run(template => Console.WriteLine(template));
+
+
+            /*       .Run((config,azure,template) => {
+             *       
+             *              azure.Deployments.Define(deploymentName)
+                         .WithExistingResourceGroup(rgName)
+                         .WithTemplate(templateJson)
+                         .WithParameters("{}")
+                         .WithMode(DeploymentMode.Incremental)
+                         .Create();
+
+             *       
+             *       
+             *       
+                           azure.Deploy,m(template, parameters)));
+                           });
+
+         */
 
 
 

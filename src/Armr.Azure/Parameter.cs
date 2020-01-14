@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Armr.Azure
 {
     public abstract class ArrayParameterBase: Parameter
     {
+        [JsonProperty(Order = 1)]
         public int? MinLength { get; set; }
+        [JsonProperty(Order = 2)]
         public int? MaxLength { get; set; }
     }
     public class StringParameter: ArrayParameterBase
@@ -31,7 +34,9 @@ namespace Armr.Azure
         {
             Type = "int";
         }
+        [JsonProperty(Order = 1)]
         public int MinValue { get; set; }
+        [JsonProperty(Order = 2)]
         public int MaxValue { get; set; }
     }
 
@@ -107,15 +112,18 @@ namespace Armr.Azure
         {
 
         }
-        
 
-        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public string Name { get; set; }
+        
+        [JsonProperty(Order = 1)]
         public string Type { get; set; }
 
+        [JsonProperty(Order = 2)]
         public object DefaultValue { get; set; }
+        [JsonProperty(Order = 3)]
         public object[] AllowedValues { get; set; }
-
+        [JsonProperty(Order = 4)]
         public IDictionary<string,object> Metadata { get; set; }
     }
 
